@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terraform AI Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>AI-Powered Terraform Generator</h1>
+    <p class="subtitle">Describe your infrastructure → Get Terraform code</p>
+
+    <div class="input-section">
+      <select id="cloud-provider">
+        <option value="aws">AWS</option>
+      </select>
+
+      <textarea
+        id="prompt-input"
+        placeholder="Example: Create an AWS VPC with 2 public subnets"
+        rows="4"
+      ></textarea>
+
+      <button onclick="generateTerraform()">Generate Terraform</button>
+    </div>
+
+    <div class="output-section" id="output" style="display:none;">
+      <h3>Generated Code:</h3>
+      <pre><code id="code-output"></code></pre>
+      <button onclick="copyCode()">Copy Code</button>
+      <button onclick="downloadCode()">Download .tf</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
