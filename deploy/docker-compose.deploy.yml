@@ -1,0 +1,25 @@
+# Production Docker Compose for Oracle Cloud Free Tier (ARM)
+# Single container serving both frontend and backend on port 80
+services:
+  terraform-ai-app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.unified
+    container_name: terraform-ai-app
+    ports:
+      - "80:80"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - API_URL=http://localhost:8001
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
