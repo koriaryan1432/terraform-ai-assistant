@@ -2,35 +2,282 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="AI-powered Terraform code generator. Transform infrastructure ideas into production-ready code.">
   <title>Terraform AI Assistant</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>AI-Powered Terraform Generator</h1>
-    <p class="subtitle">Describe your infrastructure → Get Terraform code</p>
-
-    <div class="input-section">
-      <select id="cloud-provider">
-        <option value="aws">AWS</option>
-      </select>
-
-      <textarea
-        id="prompt-input"
-        placeholder="Example: Create an AWS VPC with 2 public subnets"
-        rows="4"
-      ></textarea>
-
-      <button onclick="generateTerraform()">Generate Terraform</button>
+  <div class="app">
+    <!-- Animated Background -->
+    <div class="bg-animation">
+      <div class="bg-gradient"></div>
+      <div class="bg-grid"></div>
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
     </div>
 
-    <div class="output-section" id="output" style="display:none;">
-      <h3>Generated Code:</h3>
-      <pre><code id="code-output"></code></pre>
-      <button onclick="copyCode()">Copy Code</button>
-      <button onclick="downloadCode()">Download .tf</button>
-    </div>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style="stop-color:#6366f1"/>
+                  <stop offset="100%" style="stop-color:#8b5cf6"/>
+                </linearGradient>
+              </defs>
+              <path d="M24 4L4 14L24 24L44 14L24 4Z" fill="url(#logoGradient)" opacity="0.9"/>
+              <path d="M4 20L24 30L44 20" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 28L24 38L44 28" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="24" cy="24" r="3" fill="white"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <h1>Terraform AI</h1>
+            <span class="logo-tagline">ASSISTANT</span>
+          </div>
+        </div>
+        <p class="header-subtitle">Infrastructure as Code, Powered by Intelligence</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container">
+        <!-- Hero Card -->
+        <section class="hero-card" aria-labelledby="hero-heading">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span>Powered by Llama 3.1</span>
+          </div>
+
+          <h2 id="hero-heading" class="hero-title">
+            Transform Your Infrastructure<br>
+            <span class="gradient-text">From Words to Terraform</span>
+          </h2>
+
+          <p class="hero-description">
+            Describe your cloud architecture in plain English and get production-ready,
+            secure, and well-architected Terraform code in seconds.
+          </p>
+
+          <!-- Input Section -->
+          <div class="input-wrapper">
+            <div class="input-card">
+              <div class="cloud-selector">
+                <label class="cloud-label">Provider</label>
+                <div class="cloud-buttons">
+                  <button class="cloud-btn active" data-provider="aws" aria-pressed="true">
+                    <span class="cloud-icon">☁️</span>
+                    <span>AWS</span>
+                  </button>
+                  <button class="cloud-btn" data-provider="azure" disabled aria-disabled="true">
+                    <span class="cloud-icon">🌐</span>
+                    <span>Azure</span>
+                  </button>
+                  <button class="cloud-btn" data-provider="gcp" disabled aria-disabled="true">
+                    <span class="cloud-icon">☁️</span>
+                    <span>GCP</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="prompt-wrapper">
+                <label for="prompt-input" class="prompt-label">
+                  Describe Your Infrastructure
+                </label>
+                <div class="prompt-container">
+                  <textarea
+                    id="prompt-input"
+                    class="prompt-textarea"
+                    placeholder="e.g., Create a highly available VPC with public and private subnets across 2 AZs, RDS PostgreSQL with automatic failover, and an Application Load Balancer with auto-scaling group of EC2 instances"
+                    rows="3"
+                    maxlength="1000"
+                    spellcheck="true"
+                  ></textarea>
+                  <div class="prompt-footer">
+                    <div class="prompt-hint">
+                      <svg class="icon" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>Be specific about regions, instance types, and requirements</span>
+                    </div>
+                    <div class="char-counter">
+                      <span id="char-current">0</span>
+                      <span class="char-separator">/</span>
+                      <span id="char-max">1000</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="action-area">
+                <button
+                  type="button"
+                  onclick="generateTerraform()"
+                  id="generate-btn"
+                  class="btn btn-generate"
+                  aria-live="polite"
+                >
+                  <span class="btn-icon">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                    </svg>
+                  </span>
+                  <span class="btn-text">Generate Code</span>
+                  <span class="btn-loading" aria-hidden="true">
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                    <span class="loading-dot"></span>
+                  </span>
+                </button>
+                <button type="button" onclick="clearOutput()" class="btn btn-clear">
+                  Clear
+                </button>
+              </div>
+
+              <div id="error-message" class="error-alert" role="alert" aria-live="assertive" style="display: none;"></div>
+            </div>
+          </div>
+
+          <!-- Output Section -->
+          <section class="output-card" id="output" style="display: none;" aria-labelledby="output-heading">
+            <div class="output-header">
+              <div class="output-title-area">
+                <h3 id="output-heading" class="output-title">
+                  Generated Configuration
+                </h3>
+                <span class="output-badge">Production Ready</span>
+              </div>
+              <div class="output-stats" id="code-stats">
+                <span class="stat">
+                  <svg viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M2 3.5A1.5 1.5 0 013.5 2h1.735A4.966 4.966 0 0110 4.185V3.5a.5.5 0 01-.5-.5h-.235l-.627 1.855c-.055.167-.232.254-.423.254h-.408a.5.5 0 01-.5-.5V3.5zM3.5 4a.5.5 0 01.5.5v4.047c0 .326.085.65.246.914a.503.503 0 01-.504.565A2.5 2.5 0 013.5 10h6.293a1.5 1.5 0 011.06.576l.5.5a1.5 1.5 0 01-.798.908L13.207 14a.5.5 0 01-.5-.5V4.5a.5.5 0 01-.5-.5h-9zM13 7.5a.5.5 0 01.5.5v3a.5.5 0 01-.5.5h-6a.5.5 0 01-.5-.5v-3a.5.5 0 01.5-.5h6z"/>
+                  </svg>
+                  <span id="line-count">0 lines</span>
+                </span>
+                <span class="stat">
+                  <svg viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M1 2.75C1 1.784 1.784 1 2.75 1h10.5c.966 0 1.75.784 1.75 1.75v7.5A1.75 1.75 0 0113.25 12H9.06l-2.573 2.573A1.458 1.458 0 014 13.543V12H2.75A1.75 1.75 0 011 10.25v-7.5zM2.75 2.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25H2.75z"/>
+                  </svg>
+                  <span id="file-size">0 B</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="code-wrapper">
+              <div class="code-toolbar">
+                <div class="window-controls">
+                  <span class="control red"></span>
+                  <span class="control yellow"></span>
+                  <span class="control green"></span>
+                </div>
+                <div class="code-tabs">
+                  <span class="tab active">main.tf</span>
+                </div>
+                <div class="code-actions">
+                  <button onclick="copyCode()" class="code-btn" aria-label="Copy code">
+                    <svg viewBox="0 0 16 16" fill="currentColor">
+                      <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/>
+                      <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C14.216 0 15 .784 15 1.75v7.5A1.75 1.75 0 0113.25 11h-7.5A1.75 1.75 0 014 9.25v-7.5zM1.75 2.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h1.5a.75.75 0 01-.75.75h-5.5a.75.75 0 01-.75-.75h-1.5a.25.25 0 00-.25.25v-7.5a.25.25 0 00.25.25h7.5z"/>
+                    </svg>
+                    Copy
+                  </button>
+                  <button onclick="downloadCode()" class="code-btn" aria-label="Download">
+                    <svg viewBox="0 0 16 16" fill="currentColor">
+                      <path d="M.5 9.9a.5.5 0 01.5.5v2.5a1 1 0 001 1h12a1 1 0 001-1v-2.5a.5.5 0 01.5-.5h4a.5.5 0 010 1h-4z"/>
+                      <path d="M7.646 11.854a.5.5 0 00.708 0l3-3a.5.5 0 00-.708-.708L8.5 10.293V1.5a.5.5 0 00-1 0v8.793L5.354 8.146a.5.5 0 10-.708.708l3 3z"/>
+                    </svg>
+                    Download
+                  </button>
+                </div>
+              </div>
+              <div class="code-area">
+                <pre class="code-block" aria-label="Generated Terraform code"><code id="code-output" class="language-hcl"></code></pre>
+              </div>
+            </div>
+
+            <div class="output-footer">
+              <div class="footer-note">
+                <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Validated and formatted according to HashiCorp standards</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Features Grid -->
+        <section class="features-section" aria-labelledby="features-heading">
+          <h3 id="features-heading" class="features-title">Why Choose Terraform AI</h3>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h4>Cloud Native</h4>
+              <p>Native support for AWS, Azure, and GCP with deep understanding of cloud services nuances and best practices.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h4>Security First</h4>
+              <p>Automatically applies security best practices including IAM roles, encryption, network isolation, and least-privilege principles.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h4>Modular Design</h4>
+              <p>All resources are parameterized with extracted outputs, enabling modular reuse and seamless team collaboration.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h4>Lightning Fast</h4>
+              <p>Powered by Llama 3.1 to generate complete infrastructure code in seconds—10x faster than manual coding.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <p>&copy; 2026 Terraform AI Assistant</p>
+          <div class="footer-links">
+            <a href="#" onclick="return false;">Documentation</a>
+            <a href="#" onclick="return false;">API</a>
+            <a href="#" onclick="return false;">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
   </div>
 
   <script src="script.js"></script>
