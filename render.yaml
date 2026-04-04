@@ -1,0 +1,32 @@
+# Render.com deployment configuration
+# Deploy both backend and frontend as separate services
+
+services:
+  # Backend API Service
+  - type: web
+    name: terraform-ai-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free  # Change to 'starter' or higher for production
+    healthCheckPath: /health
+    envVars:
+      - key: GROQ_API_KEY
+        fromSecret: groq_api_key
+    autoDeploy: true
+    numInstances: 1
+    region: oregon  # Options: oregon, frankfurt, singapore
+
+  # Frontend Service
+  - type: web
+    name: terraform-ai-frontend
+    env: docker
+    dockerfilePath: frontend/Dockerfile
+    dockerContext: frontend
+    plan: free
+    envVars:
+      - key: VIRTUAL_HOST
+        value: your-domain.com  # Optional: set custom domain
+    autoDeploy: true
+    numInstances: 1
+    region: oregon
