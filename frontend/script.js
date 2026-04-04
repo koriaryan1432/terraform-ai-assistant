@@ -6,7 +6,7 @@
 // =========================================
 // Constants
 // =========================================
-const API_URL = 'http://localhost:8001';
+const API_URL = window.API_URL || 'http://localhost:8001';
 const MAX_RETRIES = 2;
 const TOAST_DURATION = 3000;
 

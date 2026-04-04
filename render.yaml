@@ -7,12 +7,12 @@ services:
     name: terraform-ai-backend
     env: docker
     dockerfilePath: backend/Dockerfile
-    dockerContext: backend
+    dockerContext: .
     plan: free  # Change to 'starter' or higher for production
     healthCheckPath: /health
     envVars:
       - key: GROQ_API_KEY
-        fromSecret: groq_api_key
+        value: GROQ_API_KEY  # Set this secret in the Render dashboard after deployment
     autoDeploy: true
     numInstances: 1
     region: oregon  # Options: oregon, frankfurt, singapore
@@ -25,6 +25,8 @@ services:
     dockerContext: frontend
     plan: free
     envVars:
+      - key: API_URL
+        value: https://terraform-ai-backend.onrender.com  # Update after first deploy
       - key: VIRTUAL_HOST
         value: your-domain.com  # Optional: set custom domain
     autoDeploy: true
