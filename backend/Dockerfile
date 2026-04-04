@@ -28,8 +28,9 @@ COPY --from=builder /root/.local /root/.local
 COPY --chown=terraform:terraform backend/ .
 COPY --chown=terraform:terraform requirements.txt .
 
-# Ensure pip installed packages are in PATH
+# Ensure pip installed packages are in PATH and discoverable by non-root user
 ENV PATH=/root/.local/bin:$PATH
+ENV PYTHONPATH=/root/.local/lib/python3.12/site-packages
 ENV PYTHONUNBUFFERED=1
 
 # Switch to non-root user
